@@ -9,7 +9,6 @@ export default function Home() {
   const [dataList, setdataList] = useState([]);
   const [status, setstatus] = useState("all");
 
-  let filterArray = [];
   useEffect(() => {}, []);
 
   const inputValue = createRef();
@@ -40,27 +39,25 @@ export default function Home() {
   };
   console.log(dataList);
 
-  const statusCall = (event) => {
-    // console.log("statuscall", event.nativeEvent.target.name);
+  // console.log("statuscall", event.nativeEvent.target.name);
 
-    filterArray = dataList.filter((x) => {
-      switch (event.nativeEvent.target.name) {
-        case "all":
-          return x;
-        case "completed":
-          return x.completed;
+  let filterArray = dataList.filter((x) => {
+    switch (status) {
+      case "all":
+        return x;
+      case "completed":
+        return x.completed;
 
-        case "pending":
-          return !x.completed;
+      case "pending":
+        return !x.completed;
 
-        default:
-          return x;
-      }
-    });
-  };
+      default:
+        return x;
+    }
+  });
 
   return (
-    <div>
+    <div className="h-screen bg-gray-100">
       <h1 className="text-blue-700">Todo App</h1>
       <form onSubmit={addtodo}>
         <input type="text" ref={inputValue} placeholder="write something..." />
@@ -70,7 +67,7 @@ export default function Home() {
       </form>
       {filterArray.map((x, index) => {
         return (
-          <div key={index}>
+          <div key={index} className="flex gap-7">
             <button
               type="button"
               onClick={() => {
@@ -79,7 +76,7 @@ export default function Home() {
             >
               done
             </button>
-            <p>{x.text}</p>
+            <p className="m-7">{x.text}</p>
             <button
               type="button"
               onClick={() => {
@@ -92,13 +89,21 @@ export default function Home() {
         );
       })}
       <div>
-        <button className="m-5" onClick={statusCall} name="all">
+        <button className="m-5" onClick={() => setstatus("all")} name="all">
           all
         </button>
-        <button className="m-5" onClick={statusCall} name="completed">
+        <button
+          className="m-5"
+          onClick={() => setstatus("completed")}
+          name="completed"
+        >
           completed
         </button>
-        <button className="m-5" onClick={statusCall} name="pending">
+        <button
+          className="m-5"
+          onClick={() => setstatus("pending")}
+          name="pending"
+        >
           pending
         </button>
       </div>
